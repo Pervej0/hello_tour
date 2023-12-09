@@ -1,25 +1,19 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
-import { CreateTour } from './app/modules/tour.service';
+// import app from './app/route';
+import TourRouteHandler from './app/modules/tour.route';
 const app: Application = express();
 
+const allRoute = [{ path: '/api/v1/tour', route: TourRouteHandler }];
+
+allRoute.forEach((item) => app.use(item.path, item.route));
 // parser
 app.use(express.json());
 app.use(cors());
 
 // testing router
 app.get('/', async (req: Request, res: Response) => {
-  res.send('Welcome to Hello Tour Server Side!');
-});
-
-app.post('/create-tour', async (req, res) => {
-  const tourData = req.body;
-  const result = await CreateTour(tourData);
-  res.status(200).json({
-    success: true,
-    message: 'Tour successfully created',
-    data: result,
-  });
+ res.send('Welcome to Hello Tour Server Side!');
 });
 
 export default app;

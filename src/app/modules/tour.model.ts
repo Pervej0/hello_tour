@@ -19,11 +19,11 @@ const TourSchema = new Schema<TTour>({
  organization: organizationSchema,
  tourPlace: {
   type: String,
-  required: [true, 'Tourplace is required!'],
+  required: [true, 'Tour Place is required!'],
  },
  totallMembers: {
   type: Number,
-  required: [true, 'Tourplace is required!'],
+  required: [true, 'totall Members is required!'],
  },
  activity: {
   type: [Array],
@@ -70,5 +70,5 @@ const TourSchema = new Schema<TTour>({
 
 // TourSchema.pre('save', (next) => {});
 
-const TourModel = mongoose.model('Tour', TourSchema);
+const TourModel = mongoose.model<TTour>('Tour', TourSchema);
 export default TourModel;
