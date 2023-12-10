@@ -1,22 +1,44 @@
-import { RequestHandler, Response, Request } from 'express';
-import { CreateTourDB } from './tour.service';
+import { RequestHandler } from 'express';
+import { CreateTourDB, GetAllTourDB, GetSingleTourDB } from './tour.service';
+import { StatusCodes } from 'http-status-codes';
 
-export const CreateTour = async (req: Request, res: Response) => {
- console.log(req.body);
+export const CreateTour: RequestHandler = async (req, res, next) => {
+ try {
+  const tourData = req.body;
+  const result = await CreateTourDB(tourData);
+  res.status(200).json({
+   success: true,
+   message: 'Tour successfully created',
+   data: result,
+  });
+ } catch (error) {
+  return next(error);
+ }
 };
 
-// export const CreateTour: RequestHandler = async (req, res) => {
-//  console.log('controller');
-//  try {
-//   const tourData = req.body;
-//   console.log(tourData, 'd');
-//   const result = await CreateTourDB(tourData);
-//   res.status(200).json({
-//    success: true,
-//    message: 'Tour successfully created',
-//    data: result,
-//   });
-//  } catch (error) {
-//   console.log(error);
-//  }
-// };
+export const GetAllTour: RequestHandler = async (req, res, next) => {
+ try {
+  const result = await GetAllTourDB();
+  res.status(200).json({
+   success: true,
+   message: 'Tours successfully retrieved!',
+   data: result,
+  });
+ } catch (error) {
+  next(error);
+ }
+};
+
+export const GetSingleTour: RequestHandler = async (req, res, next) => {
+ try {
+  const id = req.params.tourId;
+  const result = await GetSingleTourDB(id);
+  res.status(StatusCodes.OK).json({
+   success: true,
+   message: 'Tours successfully retrieved!',
+   data: result,
+  });
+ } catch (err) {
+  next(err);
+ }
+};

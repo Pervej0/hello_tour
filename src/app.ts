@@ -1,19 +1,27 @@
 import cors from 'cors';
 import express, { Application, Request, Response } from 'express';
 // import app from './app/route';
-import TourRouteHandler from './app/modules/tour.route';
+import routesHandler from './app/route';
+import GlobalErrorHandler from './app/config/middleware/GlobalErrorHandler';
+import NotFound from './app/config/middleware/notFound';
 const app: Application = express();
 
-const allRoute = [{ path: '/api/v1/tour', route: TourRouteHandler }];
-
-allRoute.forEach((item) => app.use(item.path, item.route));
 // parser
 app.use(express.json());
 app.use(cors());
+
+// routes handler
+app.use(routesHandler);
+
+// not found route
+app.use('*', NotFound);
 
 // testing router
 app.get('/', async (req: Request, res: Response) => {
  res.send('Welcome to Hello Tour Server Side!');
 });
+
+// global error handler
+app.use(GlobalErrorHandler);
 
 export default app;
